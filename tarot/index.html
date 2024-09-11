@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot do dia</title>
+    <style>
+        body {
+            background-color:#0F0F0F;
+			font-family: Junge, sans-serif;
+			text-align: center;
+            margin-top: 50px;
+        }
+
+		 h1 {
+      color:#FFFBEE;
+    }
+		p {
+	  color:#FFFBEE;
+		}
+		
+		img {
+            max-width: 50%;
+            height: auto;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tenha um maravilhoso dia!</h1>
+
+    <!-- Container for displaying the image -->
+    <div class="container">
+        <img id="randomImage" src="" alt="Random Image" />
+    </div>
+	
+	<p id="cardTitle"></p>
+	<p id="cardText"></p>
+
+    <script>
+ 
+		const texts = [
+    { "id": 1, "title": "O Louco", "text": "Hoje é um dia para abraçar novas aventuras e oportunidades. Deixe de lado o medo e siga seu coração." },
+    { "id": 2, "title": "O Mago", "text": "Você tem todos os recursos necessários para manifestar seus desejos. Confie em suas habilidades e tome a iniciativa." },
+    { "id": 3, "title": "A Sacerdotisa", "text": "Confie na sua intuição e procure respostas dentro de si. O silêncio e a reflexão serão seus aliados hoje." },
+    { "id": 4, "title": "A Imperatriz", "text": "Hoje é um dia para nutrir suas ideias e relacionamentos. Espere abundância e crescimento em suas empreitadas." },
+    { "id": 5, "title": "O Imperador", "text": "A estrutura e a disciplina são necessárias. Assuma o controle e estabeleça limites claros para alcançar seus objetivos." },
+    { "id": 6, "title": "O Hierofante", "text": "Busque orientação em tradições e sabedoria antiga. O aprendizado e a conformidade com normas podem trazer clareza." },
+    { "id": 7, "title": "Os Amantes", "text": "Hoje é um dia para decisões importantes no amor e nas parcerias. Siga o que o coração diz, mas considere as consequências." },
+    { "id": 8, "title": "O Carro", "text": "Com determinação e foco, você pode superar qualquer obstáculo. Mantenha-se no caminho e avance com confiança." },
+    { "id": 9, "title": "A Justiça", "text": "Procure equilíbrio e equidade em suas ações. Hoje é um dia para tomar decisões justas e ponderadas." },
+    { "id": 10, "title": "O Eremita", "text": "Reserve um tempo para introspecção e autodescoberta. A sabedoria vem da reflexão e do entendimento interior." },
+    { "id": 11, "title": "A Roda da Fortuna", "text": "Mudanças estão no ar. Esteja aberto às voltas do destino e aproveite as oportunidades que surgirem." },
+    { "id": 12, "title": "A Força", "text": "Use sua coragem e compaixão para enfrentar desafios. A verdadeira força vem do equilíbrio entre poder e gentileza." },
+    { "id": 13, "title": "O Enforcado", "text": "Considere novas perspectivas e sacrifícios necessários. Às vezes, é preciso deixar ir para seguir em frente." },
+    { "id": 14, "title": "A Morte", "text": "Transformação e renascimento estão em jogo. Deixe o passado para trás e abrace novas começos." },
+    { "id": 15, "title": "A Temperança", "text": "Busque harmonia e moderação em todas as áreas. O equilíbrio entre extremos trará paz e clareza." },
+    { "id": 16, "title": "O Diabo", "text": "Reconheça suas limitações e tentações. Hoje é um dia para confrontar e libertar-se de hábitos negativos." },
+    { "id": 17, "title": "A Torre", "text": "Mudanças súbitas podem ocorrer. Aceite a destruição de velhas estruturas para abrir espaço para o novo." },
+    { "id": 18, "title": "A Estrela", "text": "Tenha esperança e mantenha-se otimista. A cura e a inspiração estão ao seu alcance." },
+    { "id": 19, "title": "A Lua", "text": "Confie em seus instintos e desvende ilusões. A intuição será sua guia em tempos de incerteza." },
+    { "id": 20, "title": "O Sol", "text": "Alegria e sucesso estão no horizonte. Hoje é um dia para celebrar suas conquistas e compartilhar felicidade." },
+    { "id": 21, "title": "O Julgamento", "text": "Reflita sobre suas ações e busque redenção. O autoexame levará à renovação e ao crescimento pessoal." },
+    { "id": 22, "title": "O Mundo", "text": "Você está prestes a completar um ciclo importante. Celebre suas realizações e prepare-se para novos começos." },
+    { "id": 23, "title": "Ás de Paus", "text": "Hoje é um dia para novos começos e inspiração criativa. Aproveite a energia para iniciar projetos inovadores." },
+    { "id": 24, "title": "Dois de Paus", "text": "Planeje e visualize seu futuro. As decisões que você tomar hoje moldarão suas próximas aventuras." },
+    { "id": 25, "title": "Três de Paus", "text": "Expanda seus horizontes e explore novas oportunidades. O progresso está ao seu alcance." },
+    { "id": 26, "title": "Quatro de Paus", "text": "Celebre suas conquistas e desfrute de momentos de alegria com os outros. A estabilidade está presente." },
+    { "id": 27, "title": "Cinco de Paus", "text": "Prepare-se para desafios e competição. Use sua criatividade para superar conflitos e encontrar soluções." },
+    { "id": 28, "title": "Seis de Paus", "text": "O reconhecimento e o sucesso estão a caminho. Continue avançando com confiança e determinação." },
+    { "id": 29, "title": "Sete de Paus", "text": "Defenda suas convicções e proteja seus interesses. A perseverança será recompensada." },
+    { "id": 30, "title": "Oito de Paus", "text": "Espere progresso rápido e comunicação clara. Hoje é um dia para agir rapidamente e aproveitar o momento." },
+    { "id": 31, "title": "Nove de Paus", "text": "Mantenha-se firme e resiliente diante dos desafios. A proteção e a força interior são essenciais." },
+    { "id": 32, "title": "Dez de Paus", "text": "O peso das responsabilidades pode ser sentido. Considere delegar tarefas e aliviar sua carga." },
+    { "id": 33, "title": "Ás de Copas", "text": "Novas emoções e conexões estão surgindo. Abra seu coração para o amor e a compaixão." },
+    { "id": 34, "title": "Dois de Copas", "text": "Parcerias e relacionamentos harmoniosos são destacados. Valorize a conexão e o apoio mútuo." },
+    { "id": 35, "title": "Três de Copas", "text": "Celebre com amigos e entes queridos. A alegria compartilhada traz felicidade e união." },
+    { "id": 36, "title": "Quatro de Copas", "text": "Reflita sobre suas emoções e desejos. Considere novas possibilidades em vez de se concentrar no que falta." },
+    { "id": 37, "title": "Cinco de Copas", "text": "A perda e o arrependimento podem pesar. Concentre-se no que ainda é positivo e siga em frente." },
+    { "id": 38, "title": "Seis de Copas", "text": "Relembre momentos felizes do passado e valorize as memórias. A nostalgia pode trazer conforto." },
+    { "id": 39, "title": "Sete de Copas", "text": "Múltiplas opções e ilusões podem confundir. Escolha sabiamente e evite se perder em fantasias." },
+    { "id": 40, "title": "Oito de Copas", "text": "Deixe para trás o que não serve mais. A busca por um significado mais profundo pode levar a novos caminhos." },
+    { "id": 41, "title": "Nove de Copas", "text": "Desejos estão prestes a se realizar. A gratidão e a satisfação pessoal estão ao seu alcance." },
+    { "id": 42, "title": "Dez de Copas", "text": "A harmonia e a felicidade familiar são destacadas. Valorize os laços e a alegria compartilhada." },
+    { "id": 43, "title": "Ás de Espadas", "text": "Novas ideias e clareza mental surgem. Use sua inteligência para cortar a confusão e encontrar a verdade." },
+    { "id": 44, "title": "Dois de Espadas", "text": "Decisões difíceis podem surgir. Procure equilíbrio e clareza para tomar a melhor escolha." },
+    { "id": 45, "title": "Três de Espadas", "text": "A dor e a tristeza podem ser sentidas. Permita-se curar e aprender com experiências difíceis." },
+    { "id": 46, "title": "Quatro de Espadas", "text": "Descanse e recupere suas energias. O tempo de pausa é necessário para a renovação." },
+    { "id": 47, "title": "Cinco de Espadas", "text": "Conflitos e derrotas podem ocorrer. Reavalie suas estratégias e evite confrontos desnecessários." },
+    { "id": 48, "title": "Seis de Espadas", "text": "Movimento e transição estão em jogo. Deixe o passado para trás e siga em direção a novos horizontes." },
+    { "id": 49, "title": "Sete de Espadas", "text": "Cautela e discrição são necessárias. Evite enganos e aja com integridade." },
+    { "id": 50, "title": "Oito de Espadas", "text": "Sentimentos de restrição podem surgir. Lembre-se de que a liberdade está ao seu alcance se você mudar sua perspectiva." },
+    { "id": 51, "title": "Nove de Espadas", "text": "Ansiedade e preocupações podem pesar. Enfrente seus medos e busque apoio para encontrar alívio." },
+    { "id": 52, "title": "Dez de Espadas", "text": "O fim de um ciclo doloroso está próximo. Aceite a conclusão e prepare-se para a renovação." },
+    { "id": 53, "title": "Ás de Ouros", "text": "Novas oportunidades financeiras e materiais estão surgindo. Aproveite as chances de prosperidade." },
+    { "id": 54, "title": "Dois de Ouros", "text": "Equilibre suas responsabilidades e recursos. A flexibilidade e a adaptação são essenciais." },
+    { "id": 55, "title": "Três de Ouros", "text": "A colaboração e o trabalho em equipe trazem sucesso. Valorize as contribuições de todos os envolvidos." },
+    { "id": 56, "title": "Quatro de Ouros", "text": "A segurança financeira e a estabilidade são destacadas. Evite a avareza e esteja aberto a compartilhar." },
+    { "id": 57, "title": "Cinco de Ouros", "text": "Desafios financeiros podem surgir. Busque apoio e encontre formas de superar dificuldades." },
+    { "id": 58, "title": "Seis de Ouros", "text": "A generosidade e o equilíbrio são importantes. Dê e receba com gratidão e equidade." },
+    { "id": 59, "title": "Sete de Ouros", "text": "A paciência e a reflexão são necessárias. Avalie seu progresso e planeje seus próximos passos." },
+    { "id": 60, "title": "Oito de Ouros", "text": "Dedique-se ao aprimoramento de suas habilidades. O trabalho árduo trará recompensas." },
+    { "id": 61, "title": "Nove de Ouros", "text": "Aprecie os frutos de seu trabalho e a independência financeira. A gratificação pessoal está ao seu alcance." },
+    { "id": 62, "title": "Dez de Ouros", "text": "A estabilidade e a segurança familiar são destacadas. Valorize as tradições e o legado." },
+    { "id": 63, "title": "Pajem de Paus", "text": "Novas ideias e entusiasmo estão no ar. Abrace a curiosidade e explore novas possibilidades." },
+    { "id": 64, "title": "Cavaleiro de Paus", "text": "Aventure-se com paixão e determinação. O impulso e a coragem levarão ao sucesso." },
+    { "id": 65, "title": "Rainha de Paus", "text": "Confie em sua intuição e liderança. Sua energia e carisma inspirarão os outros." },
+    { "id": 66, "title": "Rei de Paus", "text": "Lidere com visão e confiança. Sua capacidade de inspirar e motivar será essencial." },
+    { "id": 67, "title": "Pajem de Copas", "text": "Novas emoções e criatividade estão surgindo. Abra-se para o amor e a inspiração artística." },
+    { "id": 68, "title": "Cavaleiro de Copas", "text": "Siga seu coração e busque a beleza na vida. O romance e a imaginação estão em foco." },
+    { "id": 69, "title": "Rainha de Copas", "text": "Confie em sua intuição e compaixão. Sua empatia e compreensão serão valiosas." },
+    { "id": 70, "title": "Rei de Copas", "text": "Lidere com equilíbrio emocional e sabedoria. Sua capacidade de guiar com empatia será reconhecida." },
+    { "id": 71, "title": "Pajem de Espadas", "text": "Novas ideias e curiosidade estão no ar. Abra-se para o aprendizado e a descoberta." },
+    { "id": 72, "title": "Cavaleiro de Espadas", "text": "Avance com determinação e clareza. A ação rápida e decisiva trará resultados." },
+    { "id": 73, "title": "Rainha de Espadas", "text": "Use sua inteligência e discernimento. A clareza mental e a honestidade serão suas aliadas." },
+    { "id": 74, "title": "Rei de Espadas", "text": "Lidere com lógica e autoridade. Sua capacidade de tomar decisões racionais será valorizada." },
+    { "id": 75, "title": "Pajem de Ouros", "text": "Novas oportunidades de aprendizado e crescimento estão surgindo. Seja diligente e curioso." },
+    { "id": 76, "title": "Cavaleiro de Ouros", "text": "Prossiga com cautela e determinação. O trabalho árduo e a perseverança trarão sucesso." },
+    { "id": 77, "title": "Rainha de Ouros", "text": "Cuide de si e dos outros com amor e praticidade. Sua generosidade e sensibilidade serão apreciadas." },
+    { "id": 78, "title": "Rei de Ouros", "text": "Lidere com segurança e sabedoria financeira. Sua capacidade de criar estabilidade será reconhecida." }
+]
+
+			
+        // Function to display a random image
+        function showRandomImage() {
+            // Get a random index from the images array
+            const randomIndex = Math.floor(Math.random() * texts.length);
+            // Set the src attribute of the img tag to the randomly selected image
+            document.getElementById("randomImage").src ="cartas/" + texts[randomIndex].title+".jpg";
+			document.getElementById("cardText").textContent=texts[randomIndex].text;
+			document.getElementById("cardTitle").textContent=texts[randomIndex].title;
+        }
+	/*	var index = 0
+		
+		setInterval(()=>{
+			if(index < 80){
+			document.getElementById("randomImage").src ="cartas/" + texts[index].title+".jpg";
+			document.getElementById("cardText").textContent=texts[index].text;
+			document.getElementById("cardTitle").textContent=texts[index].title;
+			index++
+			}
+			
+		}, 1000)*/
+        // Execute the function as soon as the page loads
+        window.onload = showRandomImage;
+    </script>
+
+</body>
+</html>
+
